@@ -34,6 +34,7 @@ const server = http.createServer(async (req, res) => {
     });
     res.end(JSON.stringify({
       config: {
+        title: config.title || 'API Status Monitor',
         checkInterval: config.checkInterval,
         historyPoints: config.historyPoints,
         endpoints: config.endpoints.map(e => ({

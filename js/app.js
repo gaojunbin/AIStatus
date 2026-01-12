@@ -25,6 +25,13 @@ class App {
 
     grid.innerHTML = '';
 
+    // Update page title
+    if (this.config.title) {
+      document.title = this.config.title;
+      const h1 = document.querySelector('header h1');
+      if (h1) h1.textContent = this.config.title;
+    }
+
     // Create cards
     for (const endpoint of this.config.endpoints) {
       const status = this.statusData[endpoint.id];

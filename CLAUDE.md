@@ -48,7 +48,17 @@ js/components/status-card.js   状态卡片: 延迟指标 + 历史条形图
 
 ## Key Patterns
 
-**端点配置** (`config/endpoints.json`):
+**全局配置** (`config/endpoints.json`):
+```json
+{
+  "title": "API Status Monitor",
+  "checkInterval": 60000,
+  "historyPoints": 60,
+  "endpoints": [...]
+}
+```
+
+**端点配置**:
 ```json
 {
   "id": "unique-id",

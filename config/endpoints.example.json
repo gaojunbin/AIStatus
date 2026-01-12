@@ -1,0 +1,40 @@
+{
+  "checkInterval": 60000,
+  "historyPoints": 60,
+  "endpoints": [
+    {
+      "id": "claude",
+      "name": "Claude",
+      "provider": "Anthropic",
+      "model": "claude-3",
+      "icon": "anthropic",
+      "url": "https://api.anthropic.com/v1/messages",
+      "apiKey": "your-api-key-here",
+      "healthCheck": {
+        "type": "chat",
+        "payload": {
+          "model": "claude-3-sonnet-20240229",
+          "messages": [{"role": "user", "content": "ping"}],
+          "max_tokens": 1
+        }
+      }
+    },
+    {
+      "id": "openai",
+      "name": "GPT-4",
+      "provider": "OpenAI",
+      "model": "gpt-4",
+      "icon": "openai",
+      "url": "https://api.openai.com/v1/chat/completions",
+      "apiKey": "your-api-key-here",
+      "healthCheck": {
+        "type": "chat",
+        "payload": {
+          "model": "gpt-4",
+          "messages": [{"role": "user", "content": "ping"}],
+          "max_tokens": 1
+        }
+      }
+    }
+  ]
+}

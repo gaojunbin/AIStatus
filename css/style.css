@@ -1,0 +1,318 @@
+:root {
+  --color-ok: #22c55e;
+  --color-ok-bg: #dcfce7;
+  --color-error: #ef4444;
+  --color-error-bg: #fee2e2;
+  --color-warn: #f59e0b;
+  --color-warn-bg: #fef3c7;
+  --color-bg: #f8fafc;
+  --color-card: #ffffff;
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+  padding: 24px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+header h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+header p {
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 480px) {
+  .grid { grid-template-columns: 1fr; }
+  body { padding: 16px; }
+}
+
+/* Status Card */
+.status-card {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  border: 1px solid var(--color-border);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.card-info { flex: 1; }
+
+.card-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.card-meta {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.card-meta span:not(:last-child)::after {
+  content: ' · ';
+}
+
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.ok {
+  background: var(--color-ok-bg);
+  color: var(--color-ok);
+}
+
+.status-badge.error {
+  background: var(--color-error-bg);
+  color: var(--color-error);
+}
+
+.status-badge.warn {
+  background: var(--color-warn-bg);
+  color: var(--color-warn);
+}
+
+/* Metrics */
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.metric-box {
+  background: var(--color-bg);
+  border-radius: 8px;
+  padding: 12px;
+  position: relative;
+  cursor: pointer;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.metric-value span {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+/* Tooltip */
+.tooltip {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+  box-shadow: var(--shadow);
+  z-index: 10;
+  font-size: 0.875rem;
+}
+
+.metric-box:hover .tooltip { display: block; }
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.tooltip-row span:last-child { font-weight: 600; }
+
+.tooltip-footer {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+/* History */
+.history-section {
+  margin-top: 8px;
+}
+
+.history-label {
+  font-size: 0.625rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.history-bar {
+  display: flex;
+  gap: 2px;
+  height: 32px;
+}
+
+.history-point {
+  flex: 1;
+  border-radius: 2px;
+  min-width: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+.history-point.ok { background: var(--color-ok); }
+.history-point.error { background: var(--color-error); }
+.history-point.warn { background: var(--color-warn); }
+.history-point.empty { background: var(--color-border); cursor: default; }
+
+/* Point Tooltip */
+.point-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+  z-index: 100;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  min-width: 180px;
+}
+
+.point-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-card);
+}
+
+.point-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: var(--color-border);
+}
+
+.history-point:hover .point-tooltip { display: block; }
+
+.point-tooltip .tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 0.7rem;
+}
+
+.point-tooltip .tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.point-tooltip .tooltip-row span:last-child { font-weight: 600; }
+
+.history-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.625rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+/* Loading */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--color-text-secondary);
+}
+
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-ok);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

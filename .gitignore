@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+
+# Config with API keys
+config/endpoints.json
+
+# Runtime data
+data/
+
+# OS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp

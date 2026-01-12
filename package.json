@@ -1,0 +1,9 @@
+{
+  "name": "claudestatus",
+  "version": "1.0.0",
+  "description": "AI API Health Monitor",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

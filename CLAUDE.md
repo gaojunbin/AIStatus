@@ -11,6 +11,10 @@ AI API 健康监控系统，实时监控多个 AI 服务端点的可用性和延
 ```bash
 npm start              # 启动服务器 (默认端口 3000)
 PORT=8080 npm start    # 指定端口启动
+
+# Docker 部署
+docker compose up -d   # 后台启动 (端口 14582)
+docker compose logs -f # 查看日志
 ```
 
 ## Architecture
@@ -61,7 +65,7 @@ js/components/status-card.js   状态卡片: 延迟指标 + 历史条形图
 }
 ```
 
-**Provider 认证处理** (`lib/health-checker.js:92-103`):
+**Provider 认证处理** (`lib/health-checker.js:93-103`):
 - `anthropic.com` → `x-api-key` + `anthropic-version: 2023-06-01`
 - `googleapis.com` → `x-goog-api-key`
 - 其他 (包括代理) → `Authorization: Bearer`

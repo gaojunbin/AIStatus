@@ -1,0 +1,11 @@
+services:
+  ai-status:
+    build: .
+    container_name: ai-status
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./config/endpoints.json:/app/config/endpoints.json:ro
+      - ./data:/app/data
+    environment:
+      - PORT=14582

@@ -12,6 +12,8 @@ function esc(str) {
   return d.innerHTML;
 }
 
+const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
 export function createStatusCard(endpoint, status, config) {
   const card = document.createElement('div');
   card.className = 'status-card';
@@ -54,7 +56,51 @@ export function createStatusCard(endpoint, status, config) {
     </div>
   `;
 
+  // Mobile touch support for history tooltips
+  if (isTouchDevice()) {
+    setupTouchTooltips(card);
+    card._touchSetup = true;
+  }
+
   return card;
+}
+
+function setupTouchTooltips(card) {
+  const historyBar = card.querySelector('.history-bar');
+  let activeTooltip = null;
+
+  historyBar.addEventListener('click', (e) => {
+    const point = e.target.closest('.history-point:not(.empty)');
+    if (!point) {
+      hideActiveTooltip();
+      return;
+    }
+
+    const tooltip = point.querySelector('.point-tooltip');
+    if (!tooltip) return;
+
+    if (activeTooltip === tooltip) {
+      hideActiveTooltip();
+    } else {
+      hideActiveTooltip();
+      tooltip.style.display = 'block';
+      activeTooltip = tooltip;
+    }
+  });
+
+  function hideActiveTooltip() {
+    if (activeTooltip) {
+      activeTooltip.style.display = '';
+      activeTooltip = null;
+    }
+  }
+
+  // Hide tooltip when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!historyBar.contains(e.target)) {
+      hideActiveTooltip();
+    }
+  });
 }
 
 export function updateStatusCard(card, status) {
@@ -97,26 +143,6 @@ function formatTime(ts) {
   return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
 }
 
-// Returns color based on latency: green (fast) -> yellow -> red (slow/down)
-function getLatencyColor(status, latency) {
-  if (status !== 'operational' || latency == null) {
-    return '#ef4444'; // Red for down/error
-  }
-
-  // Latency thresholds (ms)
-  const minLatency = 100;   // Below this is pure green
-  const maxLatency = 5000;  // Above this is pure red
-
-  // Clamp latency to range
-  const clamped = Math.max(minLatency, Math.min(maxLatency, latency));
-
-  // Map to hue: 120 (green) -> 0 (red)
-  const ratio = (clamped - minLatency) / (maxLatency - minLatency);
-  const hue = 120 * (1 - ratio);
-
-  return `hsl(${hue}, 70%, 50%)`;
-}
-
 function formatTimeRange(historyPoints, checkInterval) {
   const totalMinutes = (historyPoints * checkInterval) / 60000;
   if (totalMinutes >= 1440) {
@@ -139,18 +165,27 @@ function renderHistory(history, total = 60) {
   }
 
   for (const h of history) {
-    const cls = h.status === 'operational' ? 'ok' : 'error';
-    const statusText = h.status === 'operational' ? (h.chatLatency > 5000 ? 'Slow' : 'OK') : 'Down';
+    // ok = green, warn = yellow (slow), error = red (down)
+    let cls = 'error';
+    let statusText = 'Down';
+    if (h.status === 'operational') {
+      if (h.chatLatency > 5000) {
+        cls = 'warn';
+        statusText = 'Slow';
+      } else {
+        cls = 'ok';
+        statusText = 'OK';
+      }
+    }
     const time = formatTime(h.timestamp);
     const latency = h.chatLatency ?? '--';
     const ping = h.pingLatency ?? '--';
-    const color = getLatencyColor(h.status, h.chatLatency);
 
     points.push(`
-      <div class="history-point ${cls}" style="background: ${color}">
+      <div class="history-point ${cls}">
         <div class="point-tooltip">
           <div class="tooltip-header">
-            <span class="status-badge" style="background: ${color}20; color: ${color}">${statusText}</span>
+            <span class="status-badge ${cls}">${statusText}</span>
             <span>${time}</span>
           </div>
           <div class="tooltip-row"><span>Latency</span><span>${latency} ms</span></div>

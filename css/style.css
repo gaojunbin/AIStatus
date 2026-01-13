@@ -47,13 +47,24 @@ header p {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 20px;
 }
 
-@media (max-width: 480px) {
-  .grid { grid-template-columns: 1fr; }
+/* Tablet */
+@media (max-width: 768px) {
   body { padding: 16px; }
+  header { margin-bottom: 24px; }
+  header h1 { font-size: 1.5rem; }
+  .grid { gap: 16px; }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  header { margin-bottom: 20px; }
+  header h1 { font-size: 1.25rem; }
+  .grid { grid-template-columns: 1fr; gap: 12px; }
 }
 
 /* Status Card */
@@ -293,6 +304,34 @@ header p {
   font-size: 0.625rem;
   color: var(--color-text-secondary);
   margin-top: 4px;
+}
+
+/* Mobile card adjustments */
+@media (max-width: 480px) {
+  .status-card { padding: 16px; }
+  .card-header { gap: 10px; margin-bottom: 12px; }
+  .card-icon { width: 40px; height: 40px; font-size: 20px; }
+  .card-icon svg { width: 20px; height: 20px; }
+  .card-name { font-size: 1rem; }
+  .metrics { gap: 8px; margin-bottom: 12px; }
+  .metric-box { padding: 10px; }
+  .metric-value { font-size: 1.25rem; }
+  .history-bar { height: 28px; }
+
+  /* Touch-friendly tooltips */
+  .metric-box .tooltip { display: none !important; }
+  .history-point .point-tooltip { display: none !important; }
+}
+
+/* Small mobile (< 360px) */
+@media (max-width: 360px) {
+  body { padding: 8px; }
+  .status-card { padding: 12px; }
+  .card-icon { width: 36px; height: 36px; }
+  .card-icon svg { width: 18px; height: 18px; }
+  .metric-value { font-size: 1.125rem; }
+  .history-bar { height: 24px; }
+  .status-badge { padding: 3px 8px; font-size: 0.7rem; }
 }
 
 /* Loading */
